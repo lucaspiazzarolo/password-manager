@@ -22,3 +22,4 @@ def generate_password(): #function that generate a password, based on some user 
 def copy_to_clipboard(s_string): #function that copies given string to the clipboard
     print(s_string)
     #criar o código
+    
