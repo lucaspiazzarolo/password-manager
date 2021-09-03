@@ -1,6 +1,7 @@
 # ---------------------------------
 # Main code of password safe
 import hashlib #library that will be used for the hashed password
+import functions as f
 
 # ---------------------------------------------------------------------
 # Create class "Password"
@@ -32,7 +33,7 @@ print("\n---------- Access granted! ----------")
 user_option = 0
 while(user_option != 1 and user_option != 2 and user_option != 3 and user_option != 4):
     try:
-        user_option = int(input("\nWhat would you like to do?\n1 -> Generate secure password\n2 -> Store existing password \n3 -> Show all stored logins\n4 -> Retrieve specific password\n5 -> Delete password\n6 -> Exit\nYour choice: "))
+        user_option = int(input("\nWhat would you like to do?\n1 -> Generate secure password\n2 -> Store existing password \n3 -> Show all stored logins\n4 -> Show specific password\n5 -> Delete password\n6 -> Exit\nYour choice: "))
     
     except ValueError:
                 continue
@@ -42,19 +43,33 @@ while(user_option != 1 and user_option != 2 and user_option != 3 and user_option
 u_service, u_login, u_simple_password = "", "", ""
 
 if user_option == 1: #if a new password will be created
-    u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ")
-    u_login = input("What is your login (or email)? ")
-    u_simple_password = input("Create a simple password for this service: ")
-    new_password = Password(u_service, u_login, u_simple_password)
+    print("\n---------- Let's create a new password! ----------")
+    u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ") #service that will store the new password
+    u_login = input("What is your login (or email)? ") #login info
+    str_password = f.generate_password() #calls function to generate the password
+    new_password = Password(u_service, u_login, str_password) #create new password object
     #implementar código para criptografar a senha
     #implementar código para salvar a senha na tabela
     #implementar código de copiar a senha para o clipboard
-elif user_option == 2: #if a password is being consulted
-    u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ")
-    #implementar código para exibir a senha
-    #implementar código de copiar a senha para o clipboard
-elif user_option == 3: #if all passwords will be shown
+
+elif user_option == 2: #if an existing password will be stored
+    print("\n---------- Let's store your existing password! ----------")
+    u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ") #service that will store the new password
+    u_login = input("What is your login (or email)? ") #login info
+    str_password = input("What is your password? ") #existing password info
+    new_password = Password(u_service, u_login, str_password) #create new password object
+    #implementar código para criptografar a senha
+    #implementar código para salvar a senha na tabela
+
+elif user_option == 3: #if all stored logins will be shown
     x = 1 #implementar código para exibir toda a base
-else:
+
+elif user_option == 4: #if a specific password needs to be shown
     u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ")
-    #implementar código para deletar a senha da tabela
+    #implementar código para descriptografar a senha da tabela
+    #trazer a senha
+    #copiar para clipboard
+
+elif user_option == 5: #if a specific password needs to be deleted from the database
+    u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ")
+    #implementar código para deletar a linha na tabela
