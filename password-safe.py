@@ -1,5 +1,6 @@
 # ---------------------------------
 # Main code of password safe
+import hashlib #library that will be used for the hashed password
 
 # ---------------------------------------------------------------------
 # Create class "Password"
@@ -12,14 +13,17 @@ class Password:
 # ---------------------------------------------------------------------
 # Require master password
 print("\n---------- Welcome to your password safe! ----------")
-master_password = "abcd"
-input_password = ""
-while(input_password != master_password):
+master_password = "b2e618d56fe1074893f768d24de12017fb28df02" #You should run the 'hash-engine.py' script and replace this with your hashed password
+salt = "x\¨Ngy7" #salt used both in 'hash-engine.py' and here
+
+hashed_password = ""
+while(hashed_password != master_password):
     try:
-        input_password = input("\nWhat is your master password?: ")
+        input_password = input("\nWhat is your master password?: ") #checks for input password
+        hashed_password = hashlib.sha1((input_password + salt).encode('utf-8')).hexdigest() #hashes input password
     
     except ValueError:
-                continue
+        continue
 
 # ---------------------------------------------------------------------
 # Greetings and options to user
@@ -28,7 +32,7 @@ print("\n---------- Access granted! ----------")
 user_option = 0
 while(user_option != 1 and user_option != 2 and user_option != 3 and user_option != 4):
     try:
-        user_option = int(input("\nWhat would you like to do?\n1 -> Create new password\n2 -> Show specific password\n3 -> Show all passwords\n4 -> Delete password\nYour choice: "))
+        user_option = int(input("\nWhat would you like to do?\n1 -> Generate secure password\n2 -> Store existing password \n3 -> Show all stored logins\n4 -> Retrieve specific password\n5 -> Delete password\n6 -> Exit\nYour choice: "))
     
     except ValueError:
                 continue
