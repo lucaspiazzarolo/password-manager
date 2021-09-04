@@ -1,5 +1,6 @@
 import string
 import secrets
+from cryptography.fernet import Fernet
 
 def generate_password(): #function that generate a password, based on some user inputs
     num_chars = 0
@@ -23,10 +24,20 @@ def copy_to_clipboard(s_string): #function that copies given string to the clipb
     print(s_string)
     #criar o código
 
+# Function to load encryption key
+def call_key():
+    return open("pass.key", "rb").read()
+
 def encrypt_string(s_string): #function that encrypts given string
-    print(s_string)
-    #criar o código
+    key = call_key()
+    regular_password = s_string.encode()
+    encrypted_password = Fernet(key).encrypt(regular_password)
+    print(str(encrypted_password))
+    return str(encrypted_password)[2:-1]
 
 def decrypt_string(s_string): #function that decrypts given string
-    print(s_string)
-    #criar o código
+    key = call_key()
+    byte_string = s_string.encode()
+    decrypted_password = Fernet(key).decrypt(byte_string)
+    print(str(decrypted_password))
+    return str(decrypted_password)[2:-1]
