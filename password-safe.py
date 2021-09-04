@@ -2,6 +2,8 @@
 # Main code of password safe
 import hashlib #library that will be used for the hashed password
 import functions as f
+import secrets
+import string
 
 # ---------------------------------------------------------------------
 # Create class "Password"
@@ -15,14 +17,22 @@ class Password:
 # Require master password
 print("\n---------- Welcome to your password safe! ----------")
 master_password = "b2e618d56fe1074893f768d24de12017fb28df02" #You should run the 'hash-engine.py' script and replace this with your hashed password
+master_password = master_password + ''.join(secrets.choice(string.ascii_letters + string.digits)) #returns password
 salt = "x\¨Ngy7" #salt used both in 'hash-engine.py' and here
+peppers = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","1","2","3","4","5","6","7","8","9","0"] #possible peppers ahead of master password
 
 hashed_password = ""
-while(hashed_password != master_password):
+correct_password = False
+
+while correct_password == False: #while user didn't input the correct password
     try:
         input_password = input("\nWhat is your master password?: ") #checks for input password
         hashed_password = hashlib.sha1((input_password + salt).encode('utf-8')).hexdigest() #hashes input password
-    
+        
+        for pepper in peppers: #loop through all possible peppers
+            if (hashed_password + pepper) == master_password:
+                correct_password = True
+
     except ValueError:
         continue
 
@@ -31,7 +41,7 @@ while(hashed_password != master_password):
 print("\n---------- Access granted! ----------")
 
 user_option = 0
-while(user_option != 1 and user_option != 2 and user_option != 3 and user_option != 4):
+while not(user_option >= 1 and user_option <= 6):
     try:
         user_option = int(input("\nWhat would you like to do?\n1 -> Generate secure password\n2 -> Store existing password \n3 -> Show all stored logins\n4 -> Show specific password\n5 -> Delete password\n6 -> Exit\nYour choice: "))
     
