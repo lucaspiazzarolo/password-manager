@@ -8,10 +8,11 @@ import string
 # ---------------------------------------------------------------------
 # Create class "Password"
 class Password:
-    def __init__(self, u_service, u_login, u_simple_password):
+    def __init__(self, u_service, u_login, c_password):
         self.u_service = u_service
         self.u_login = u_login
-        self.u_simple_password = u_simple_password
+        self.c_password = c_password
+    
 
 # ---------------------------------------------------------------------
 # Require master password
@@ -58,12 +59,11 @@ while(user_option != 6): #loop so the user can perform many actions in one login
     if user_option == 1: #if a new password will be created
         print("\n---------- Let's create a new password! ----------")
         u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ") #service that will store the new password
-        #check if already in DB
         u_login = input("What is your login (or email)? ") #login info
         str_password = f.generate_password() #calls function to generate the password
         c_password = f.encrypt_string(str_password) #encrypts password
-        new_password = Password(u_service, u_login, c_password) #create new password object
-        #implementar código para salvar a senha na tabela
+        #new_password = Password(u_service, u_login, c_password) #create new password object - still not working
+        f.write_table(u_service, u_login, c_password) #writes the password in the table
         #implementar código de copiar a senha para o clipboard
 
     elif user_option == 2: #if an existing password will be stored
@@ -72,8 +72,8 @@ while(user_option != 6): #loop so the user can perform many actions in one login
         u_login = input("What is your login (or email)? ") #login info
         str_password = input("What is your password? ") #existing password info
         c_password = f.encrypt_string(str_password) #encrypts password
-        new_password = Password(u_service, u_login, str_password) #create new password object
-        #implementar código para salvar a senha na tabela
+        #new_password = Password(u_service, u_login, str_password) #create new password object - still not working
+        f.write_table(u_service, u_login, c_password) #writes the password in the table
 
     elif user_option == 3: #if all stored logins will be shown
         x = 1 #implementar código para exibir toda a base

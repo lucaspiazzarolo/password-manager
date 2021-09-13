@@ -2,6 +2,7 @@ import string
 import secrets
 from cryptography.fernet import Fernet
 import mysql.connector
+from mysql.connector.errors import InterfaceError
 
 def generate_password(): #function that generate a password, based on some user inputs
     num_chars = 0
@@ -29,7 +30,6 @@ def encrypt_string(s_string): #function that encrypts given string
     key = call_key()
     regular_password = s_string.encode()
     encrypted_password = Fernet(key).encrypt(regular_password)
-    print(str(encrypted_password))
     return str(encrypted_password)[2:-1]
 
 def decrypt_string(s_string): #function that decrypts given string
@@ -39,7 +39,19 @@ def decrypt_string(s_string): #function that decrypts given string
     print(str(decrypted_password))
     return str(decrypted_password)[2:-1]
 
+def create_database(): #function that creates "passwords" database
+    db = mysql.connector.connect(
+        host = "localhost",
+        user = "root",
+        passwd = "root", #this password may be different, depending on your MySQL installation
+    )
+    mycursor = db.cursor()
+    mycursor.execute("CREATE DATABASE IF NOT EXISTS passwords") #creates the "passwords" database
+
 def connect_database(): #function that connects to "passwords" database
+
+    create_database() #creates the database, if it does not already exist
+
     db = mysql.connector.connect(
         host = "localhost",
         user = "root",
@@ -47,20 +59,21 @@ def connect_database(): #function that connects to "passwords" database
         database = "passwords"
     )
     mycursor = db.cursor()
-    mycursor.execute("CREATE TABLE StoredPassword (service VARCHAR(50), login VARCHAR(50), password VARCHAR(50))")
 
+    mycursor.execute("CREATE TABLE IF NOT EXISTS PasswordsTable (service VARCHAR(50), login VARCHAR(200), password VARCHAR(200))") #creates the table of stored passwords in the DB, if it does not already exist
+    return(db, mycursor)
 
 def copy_to_clipboard(s_string): #function that copies given string to the clipboard
     print(s_string)
     #criar o código
 
-def create_table(): #function that creates the table to store the passwords
-    print("Hello")
-    #criar o código
-
-def write_table(): #function that stores data in the table
-    print("Hello")
-    #criar o código
+def write_table(u_service, u_login, c_password): #function that stores data in the table
+    db, mycursor = connect_database() #connects to database
+    mycursor.execute("INSERT INTO PasswordsTable (service, login, password) VALUES (%s, %s, %s)",(u_service, u_login, c_password))
+    db.commit()
+    mycursor.execute("SELECT * FROM PasswordsTable")
+    for x in mycursor:
+        print(x)
 
 def delete_table_row(): #function that deletes one row from table
     print("Hello")
