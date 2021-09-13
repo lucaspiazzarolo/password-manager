@@ -41,45 +41,49 @@ while correct_password == False: #while user didn't input the correct password
 print("\n---------- Access granted! ----------")
 
 user_option = 0
-while not(user_option >= 1 and user_option <= 6):
-    try:
-        user_option = int(input("\nWhat would you like to do?\n1 -> Generate secure password\n2 -> Store existing password \n3 -> Show all stored logins\n4 -> Show specific password\n5 -> Delete password\n6 -> Exit\nYour choice: "))
-    
-    except ValueError:
-                continue
 
-# ---------------------------------------------------------------------
-# Next interation with user, based on the previous choice 
-u_service, u_login, u_simple_password = "", "", ""
+while(user_option != 6): #loop so the user can perform many actions in one login.
+    user_option = 0
+    while not(user_option >= 1 and user_option <= 6):
+        try:
+            user_option = int(input("\nWhat would you like to do?\n1 -> Generate secure password\n2 -> Store existing password \n3 -> Show all stored logins\n4 -> Show specific password\n5 -> Delete password\n6 -> Exit\nYour choice: "))
+        
+        except ValueError:
+                    continue
 
-if user_option == 1: #if a new password will be created
-    print("\n---------- Let's create a new password! ----------")
-    u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ") #service that will store the new password
-    u_login = input("What is your login (or email)? ") #login info
-    str_password = f.generate_password() #calls function to generate the password
-    new_password = Password(u_service, u_login, str_password) #create new password object
-    #implementar código para criptografar a senha
-    #implementar código para salvar a senha na tabela
-    #implementar código de copiar a senha para o clipboard
+    # ---------------------------------------------------------------------
+    # Next interation with user, based on the previous choice 
+    u_service, u_login, u_simple_password = "", "", "" #check if needs to be these variables.
 
-elif user_option == 2: #if an existing password will be stored
-    print("\n---------- Let's store your existing password! ----------")
-    u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ") #service that will store the new password
-    u_login = input("What is your login (or email)? ") #login info
-    str_password = input("What is your password? ") #existing password info
-    new_password = Password(u_service, u_login, str_password) #create new password object
-    #implementar código para criptografar a senha
-    #implementar código para salvar a senha na tabela
+    if user_option == 1: #if a new password will be created
+        print("\n---------- Let's create a new password! ----------")
+        u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ") #service that will store the new password
+        #check if already in DB
+        u_login = input("What is your login (or email)? ") #login info
+        str_password = f.generate_password() #calls function to generate the password
+        c_password = f.encrypt_string(str_password) #encrypts password
+        new_password = Password(u_service, u_login, c_password) #create new password object
+        #implementar código para salvar a senha na tabela
+        #implementar código de copiar a senha para o clipboard
 
-elif user_option == 3: #if all stored logins will be shown
-    x = 1 #implementar código para exibir toda a base
+    elif user_option == 2: #if an existing password will be stored
+        print("\n---------- Let's store your existing password! ----------")
+        u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ") #service that will store the new password
+        u_login = input("What is your login (or email)? ") #login info
+        str_password = input("What is your password? ") #existing password info
+        c_password = f.encrypt_string(str_password) #encrypts password
+        new_password = Password(u_service, u_login, str_password) #create new password object
+        #implementar código para salvar a senha na tabela
 
-elif user_option == 4: #if a specific password needs to be shown
-    u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ")
-    #implementar código para descriptografar a senha da tabela
-    #trazer a senha
-    #copiar para clipboard
+    elif user_option == 3: #if all stored logins will be shown
+        x = 1 #implementar código para exibir toda a base
 
-elif user_option == 5: #if a specific password needs to be deleted from the database
-    u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ")
-    #implementar código para deletar a linha na tabela
+    elif user_option == 4: #if a specific password needs to be shown
+        u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ")
+        #implementar código para descriptografar a senha da tabela
+        #trazer a senha
+        #copiar para clipboard
+
+    elif user_option == 5: #if a specific password needs to be deleted from the database
+        u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ")
+        #implementar código para deletar a linha na tabela
