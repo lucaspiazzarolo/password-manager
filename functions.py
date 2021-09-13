@@ -71,9 +71,10 @@ def write_table(u_service, u_login, c_password): #function that stores data in t
     db, mycursor = connect_database() #connects to database
     mycursor.execute("INSERT INTO PasswordsTable (service, login, password) VALUES (%s, %s, %s)",(u_service, u_login, c_password))
     db.commit()
-    mycursor.execute("SELECT * FROM PasswordsTable")
-    for x in mycursor:
-        print(x)
+    print("\n---------- Password successfully inserted into table! ----------")
+    #mycursor.execute("SELECT * FROM PasswordsTable")
+    #for x in mycursor:
+    #    print(x)
 
 def delete_table_row(): #function that deletes one row from table
     print("Hello")
@@ -84,5 +85,13 @@ def show_password(): #function that returns one password from the table
     #criar o código
 
 def show_logins(): #function that shows all logins stored in the table
-    print("Hello")
-    #criar o código 
+    db, mycursor = connect_database() #connects to database
+    mycursor.execute("SELECT service, login FROM PasswordsTable ORDER BY service")
+    rows = mycursor.fetchall()
+    print("Total records found in database: {}".format(len(rows)))
+    
+    for x in rows:
+        print("Service:", end = " ")
+        print(*x, sep = " || Login: ")
+    
+    print("\n---------- Done! ----------")

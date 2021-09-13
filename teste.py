@@ -1,3 +1,3 @@
 import functions as f
 
-f.connect_database()
+f.show_logins()
