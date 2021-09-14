@@ -82,8 +82,7 @@ while(user_option != 7): #loop so the user can perform many actions in one login
     elif user_option == 4: #if a specific password needs to be shown
         print("\n\n---------- Let's retrieve your password! ----------\n")
         u_service = input("What is the service? Example: Facebook, Instagram, etc.: ")
-        #implementar código para descriptografar a senha da tabela
-        #trazer a senha
+        f.show_password(u_service)
         #copiar para clipboard
 
     elif user_option == 5: #if a specific password needs to be deleted from the database

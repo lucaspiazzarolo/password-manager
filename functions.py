@@ -69,6 +69,14 @@ def copy_to_clipboard(s_string): #function that copies given string to the clipb
 
 def write_table(u_service, u_login, c_password): #function that stores data in the table
     db, mycursor = connect_database() #connects to database
+    
+    select_query = f"SELECT * FROM PasswordsTable WHERE service = '{u_service}'" #tries to get stored info for this service
+    mycursor.execute(select_query)
+    if len(mycursor.fetchall()) > 0:
+        print("\n'{}' already has a password stored in the database. \n".format(u_service))
+        print("\n---------- Please select a new option below ----------")
+        return None
+
     #check if service already present into table
     mycursor.execute("INSERT INTO PasswordsTable (service, login, password) VALUES (%s, %s, %s)",(u_service, u_login, c_password)) #SQL script to insert new row into table
     db.commit() #commmit changes in table
@@ -86,6 +94,7 @@ def show_password(u_service): #function that returns one password from the table
     for row in records:
         print("\nLogin: ", row[0], end = " ")
         print(" ||  Password: ", decrypt_string(row[1]))
+    print("\n---------- Done! ----------")
 
 def show_logins(): #function that shows all logins stored in the table
     db, mycursor = connect_database() #connects to database
