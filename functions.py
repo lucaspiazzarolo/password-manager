@@ -70,19 +70,37 @@ def copy_to_clipboard(s_string): #function that copies given string to the clipb
 def write_table(u_service, u_login, c_password): #function that stores data in the table
     db, mycursor = connect_database() #connects to database
     
-    select_query = f"SELECT * FROM PasswordsTable WHERE service = '{u_service}'" #tries to get stored info for this service
-    mycursor.execute(select_query)
-    if len(mycursor.fetchall()) > 0:
-        print("\n'{}' already has a password stored in the database. \n".format(u_service))
-        print("\n---------- Please select a new option below ----------")
-        return None
+    #select_query = f"SELECT * FROM PasswordsTable WHERE service = '{u_service}'" #tries to get stored info for this service
+    #mycursor.execute(select_query)
+    #if len(mycursor.fetchall()) > 0:
+     #   print("\n'{}' already has a password stored in the database. \n".format(u_service))
+     #   print("\n---------- Please select a new option below ----------")
+     #   return None
 
     #check if service already present into table
     mycursor.execute("INSERT INTO PasswordsTable (service, login, password) VALUES (%s, %s, %s)",(u_service, u_login, c_password)) #SQL script to insert new row into table
     db.commit() #commmit changes in table
     print("\n---------- Password successfully inserted into table! ----------")
 
+def check_if_registered(u_service): #function that checks if some string is already present in database
+    db, mycursor = connect_database() #connects to database
+    
+    service_registered = False
+
+    select_query = f"SELECT * FROM PasswordsTable WHERE service = '{u_service}'" #tries to get stored info for this service
+    mycursor.execute(select_query)
+    if len(mycursor.fetchall()) > 0:
+        print("\n'{}' already has a password stored in the database. \n".format(u_service))
+        print("\n---------- Please select a new option below ----------")
+        service_registered = True
+    
+    return service_registered
+
 def delete_table_row(): #function that deletes one row from table
+    print("Hello")
+    #criar o código
+
+def change_table_row(): #function that updates one row from table
     print("Hello")
     #criar o código
 

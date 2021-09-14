@@ -47,7 +47,7 @@ while(user_option != 7): #loop so the user can perform many actions in one login
     user_option = 0
     while not(user_option >= 1 and user_option <= 7):
         try:
-            user_option = int(input("\nWhat would you like to do?\n1 -> Generate secure password\n2 -> Store existing password \n3 -> Display all stored logins\n4 -> Display specific password\n5 -> Delete register\n6 -> Change password\n7 -> Exit\nYour choice: "))
+            user_option = int(input("\nWhat would you like to do?\n1 -> Generate secure password\n2 -> Store existing password \n3 -> Display all stored logins\n4 -> Display specific password\n5 -> Update register\n6 -> Change password\n7 -> Exit\nYour choice: "))
         
         except ValueError:
                     continue
@@ -59,21 +59,27 @@ while(user_option != 7): #loop so the user can perform many actions in one login
     if user_option == 1: #if a new password will be created
         print("\n---------- Let's create a new password! ----------")
         u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc.: ") #service that will store the new password
-        u_login = input("What is your login (or email)? ") #login info
-        str_password = f.generate_password() #calls function to generate the password
-        c_password = f.encrypt_string(str_password) #encrypts password
-        #new_password = Password(u_service, u_login, c_password) #create new password object - still not working
-        f.write_table(u_service, u_login, c_password) #writes the password in the table
-        #implementar código de copiar a senha para o clipboard
+        service_registered = f.check_if_registered(u_service) #checks if service is already registered 
+        
+        if service_registered == False: #if it is a new service
+            u_login = input("What is your login (or email)? ") #login info
+            str_password = f.generate_password() #calls function to generate the password
+            c_password = f.encrypt_string(str_password) #encrypts password
+            #new_password = Password(u_service, u_login, c_password) #create new password object - still not working         
+            f.write_table(u_service, u_login, c_password) #writes the password in the table
+            #implementar código de copiar a senha para o clipboard
 
     elif user_option == 2: #if an existing password will be stored
         print("\n---------- Let's store your existing password! ----------")
         u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc.: ") #service that will store the new password
-        u_login = input("What is your login (or email)? ") #login info
-        str_password = input("What is your password? ") #existing password info
-        c_password = f.encrypt_string(str_password) #encrypts password
-        #new_password = Password(u_service, u_login, str_password) #create new password object - still not working
-        f.write_table(u_service, u_login, c_password) #writes the password in the table
+        service_registered = f.check_if_registered(u_service) #checks if service is already registered 
+        
+        if service_registered == False: #if it is a new service
+            u_login = input("What is your login (or email)? ") #login info
+            str_password = input("What is your password? ") #existing password info
+            c_password = f.encrypt_string(str_password) #encrypts password
+            #new_password = Password(u_service, u_login, str_password) #create new password object - still not working
+            f.write_table(u_service, u_login, c_password) #writes the password in the table
 
     elif user_option == 3: #if all stored logins will be shown
         print("\n---------- Retrieving all logins from database! ----------\n")
@@ -92,3 +98,6 @@ while(user_option != 7): #loop so the user can perform many actions in one login
     elif user_option == 6: #if a specific password needs to be updated in the database
         u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ")
         #implementar código para deletar a linha na tabela
+
+    elif user_option == 7: #exit
+        print("\n\n---------- See you later! ----------\n")
