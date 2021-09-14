@@ -1,3 +1,4 @@
+import logging
 import string
 import secrets
 from cryptography.fernet import Fernet
@@ -36,7 +37,6 @@ def decrypt_string(s_string): #function that decrypts given string
     key = call_key()
     byte_string = s_string.encode()
     decrypted_password = Fernet(key).decrypt(byte_string)
-    print(str(decrypted_password))
     return str(decrypted_password)[2:-1]
 
 def create_database(): #function that creates "passwords" database
@@ -69,28 +69,31 @@ def copy_to_clipboard(s_string): #function that copies given string to the clipb
 
 def write_table(u_service, u_login, c_password): #function that stores data in the table
     db, mycursor = connect_database() #connects to database
-    mycursor.execute("INSERT INTO PasswordsTable (service, login, password) VALUES (%s, %s, %s)",(u_service, u_login, c_password))
-    db.commit()
+    #check if service already present into table
+    mycursor.execute("INSERT INTO PasswordsTable (service, login, password) VALUES (%s, %s, %s)",(u_service, u_login, c_password)) #SQL script to insert new row into table
+    db.commit() #commmit changes in table
     print("\n---------- Password successfully inserted into table! ----------")
-    #mycursor.execute("SELECT * FROM PasswordsTable")
-    #for x in mycursor:
-    #    print(x)
 
 def delete_table_row(): #function that deletes one row from table
     print("Hello")
     #criar o código
 
-def show_password(): #function that returns one password from the table
-    print("Hello")
-    #criar o código
+def show_password(u_service): #function that returns one password from the table
+    db, mycursor = connect_database() #connects to database
+    select_query = f"SELECT login, password FROM PasswordsTable WHERE service = '{u_service}'" #retrieves all stored passwords for this service
+    mycursor.execute(select_query)
+    records = mycursor.fetchall()
+    for row in records:
+        print("\nLogin: ", row[0], end = " ")
+        print(" ||  Password: ", decrypt_string(row[1]))
 
 def show_logins(): #function that shows all logins stored in the table
     db, mycursor = connect_database() #connects to database
-    mycursor.execute("SELECT service, login FROM PasswordsTable ORDER BY service")
-    rows = mycursor.fetchall()
-    print("Total records found in database: {}".format(len(rows)))
+    mycursor.execute("SELECT service, login FROM PasswordsTable ORDER BY service") #Selects all services and logins from Table
+    rows = mycursor.fetchall() #gets all rows from selected table
+    print("Total records found in database: {}".format(len(rows))) #how many rows in table
     
-    for x in rows:
+    for x in rows: #prints each row from table
         print("Service:", end = " ")
         print(*x, sep = " || Login: ")
     

@@ -43,11 +43,11 @@ print("\n---------- Access granted! ----------")
 
 user_option = 0
 
-while(user_option != 6): #loop so the user can perform many actions in one login.
+while(user_option != 7): #loop so the user can perform many actions in one login.
     user_option = 0
-    while not(user_option >= 1 and user_option <= 6):
+    while not(user_option >= 1 and user_option <= 7):
         try:
-            user_option = int(input("\nWhat would you like to do?\n1 -> Generate secure password\n2 -> Store existing password \n3 -> Show all stored logins\n4 -> Show specific password\n5 -> Delete password\n6 -> Exit\nYour choice: "))
+            user_option = int(input("\nWhat would you like to do?\n1 -> Generate secure password\n2 -> Store existing password \n3 -> Display all stored logins\n4 -> Display specific password\n5 -> Delete register\n6 -> Change password\n7 -> Exit\nYour choice: "))
         
         except ValueError:
                     continue
@@ -80,11 +80,16 @@ while(user_option != 6): #loop so the user can perform many actions in one login
         f.show_logins() #calls function that shows all logins from database
 
     elif user_option == 4: #if a specific password needs to be shown
-        u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ")
+        print("\n\n---------- Let's retrieve your password! ----------\n")
+        u_service = input("What is the service? Example: Facebook, Instagram, etc.: ")
         #implementar código para descriptografar a senha da tabela
         #trazer a senha
         #copiar para clipboard
 
     elif user_option == 5: #if a specific password needs to be deleted from the database
+        u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc.: ")
+        #implementar código para deletar a linha na tabela
+    
+    elif user_option == 6: #if a specific password needs to be updated in the database
         u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ")
         #implementar código para deletar a linha na tabela
