@@ -65,7 +65,6 @@ def connect_database(): #function that connects to "passwords" database
 
 def copy_to_clipboard(s_string): #function that copies given string to the clipboard
     pyperclip.copy(s_string)
-    #criar o código
 
 def write_table(u_service, u_login, c_password): #function that stores data in the table
     db, mycursor = connect_database() #connects to database
