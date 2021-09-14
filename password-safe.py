@@ -47,7 +47,7 @@ while(user_option != 7): #loop so the user can perform many actions in one login
     user_option = 0
     while not(user_option >= 1 and user_option <= 7):
         try:
-            user_option = int(input("\nWhat would you like to do?\n1 -> Generate secure password\n2 -> Store existing password \n3 -> Display all stored logins\n4 -> Display specific password\n5 -> Update register\n6 -> Change password\n7 -> Exit\nYour choice: "))
+            user_option = int(input("\nWhat would you like to do?\n1 -> Generate secure password\n2 -> Store existing password \n3 -> Display all stored logins\n4 -> Display specific password\n5 -> Update register\n6 -> Delete register\n7 -> Exit\nYour choice: "))
         
         except ValueError:
                     continue
@@ -91,13 +91,14 @@ while(user_option != 7): #loop so the user can perform many actions in one login
         f.show_password(u_service)
         #copiar para clipboard
 
-    elif user_option == 5: #if a specific password needs to be deleted from the database
+    elif user_option == 5: #if a specific register needs to be updated from the database
         u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc.: ")
         #implementar código para deletar a linha na tabela
     
-    elif user_option == 6: #if a specific password needs to be updated in the database
+    elif user_option == 6: #if a specific register needs to be deleted from the database
         u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ")
-        #implementar código para deletar a linha na tabela
+        f.delete_table_row(u_service)
+        print("\n---------- {} register successfully deleted! ----------\n".format(u_service))
 
     elif user_option == 7: #exit
         print("\n\n---------- See you later! ----------\n")
