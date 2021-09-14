@@ -59,7 +59,11 @@ while(user_option != 7): #loop so the user can perform many actions in one login
     if user_option == 1: #if a new password will be created
         print("\n---------- Let's create a new password! ----------")
         u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc.: ") #service that will store the new password
-        service_registered = f.check_if_registered(u_service) #checks if service is already registered 
+        service_registered = f.check_if_registered(u_service) #checks if service is already registered
+        
+        if service_registered == True: #if it is an already registered service
+            print("\n'{}' already has a password stored in the database. \n".format(u_service))
+            print("\n---------- Please select a new option below ----------")
         
         if service_registered == False: #if it is a new service
             u_login = input("What is your login (or email)? ") #login info
@@ -67,12 +71,17 @@ while(user_option != 7): #loop so the user can perform many actions in one login
             c_password = f.encrypt_string(str_password) #encrypts password
             #new_password = Password(u_service, u_login, c_password) #create new password object - still not working         
             f.write_table(u_service, u_login, c_password) #writes the password in the table
+            print("\n---------- Password successfully inserted into table! ----------")
             #implementar código de copiar a senha para o clipboard
 
     elif user_option == 2: #if an existing password will be stored
         print("\n---------- Let's store your existing password! ----------")
         u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc.: ") #service that will store the new password
-        service_registered = f.check_if_registered(u_service) #checks if service is already registered 
+        service_registered = f.check_if_registered(u_service) #checks if service is already registered
+
+        if service_registered == True: #if it is an already registered service
+            print("\n'{}' already has a password stored in the database. \n".format(u_service))
+            print("\n---------- Please select a new option below ----------")
         
         if service_registered == False: #if it is a new service
             u_login = input("What is your login (or email)? ") #login info
@@ -80,6 +89,7 @@ while(user_option != 7): #loop so the user can perform many actions in one login
             c_password = f.encrypt_string(str_password) #encrypts password
             #new_password = Password(u_service, u_login, str_password) #create new password object - still not working
             f.write_table(u_service, u_login, c_password) #writes the password in the table
+            print("\n---------- Password successfully inserted into table! ----------")
 
     elif user_option == 3: #if all stored logins will be shown
         print("\n---------- Retrieving all logins from database! ----------\n")
@@ -93,12 +103,14 @@ while(user_option != 7): #loop so the user can perform many actions in one login
 
     elif user_option == 5: #if a specific register needs to be updated from the database
         u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc.: ")
+        f.change_table_row(u_service)
         #implementar código para deletar a linha na tabela
     
     elif user_option == 6: #if a specific register needs to be deleted from the database
-        u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc. ")
+        u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc.: ")
         f.delete_table_row(u_service)
-        print("\n---------- {} register successfully deleted! ----------\n".format(u_service))
+        if f.check_if_registered(u_service) == True:
+            print("\n---------- {} register successfully deleted! ----------\n".format(u_service))
 
     elif user_option == 7: #exit
         print("\n\n---------- See you later! ----------\n")
