@@ -1,4 +1,4 @@
-import logging
+import pyperclip
 import string
 import secrets
 from cryptography.fernet import Fernet
@@ -64,7 +64,7 @@ def connect_database(): #function that connects to "passwords" database
     return(db, mycursor)
 
 def copy_to_clipboard(s_string): #function that copies given string to the clipboard
-    print(s_string)
+    pyperclip.copy(s_string)
     #criar o código
 
 def write_table(u_service, u_login, c_password): #function that stores data in the table
@@ -150,11 +150,13 @@ def change_table_row(u_service): #function that updates one row from table
         return None        
     
     u_password = encrypt_string(str_password) #encrypts password
+
+    copy_to_clipboard(str_password) #copies password to clipboard
     
     delete_table_row(u_service) #deletes outdated row in table
     write_table(u_service, u_login, u_password) #writes new row with updated password
     db.commit() #commits changes into DB
-    print("\n---------- {} register successfully updated! ----------\n".format(u_service))
+    print("\n---------- {} register successfully updated! Password copied to clipboard! ----------\n".format(u_service))
 
 def show_password(u_service): #function that returns one password from the table
     db, mycursor = connect_database() #connects to database
@@ -164,7 +166,9 @@ def show_password(u_service): #function that returns one password from the table
     for row in records:
         print("\nLogin: ", row[0], end = " ")
         print(" ||  Password: ", decrypt_string(row[1]))
-    print("\n---------- Done! ----------")
+        copy_to_clipboard(decrypt_string(row[1]))
+    print("\n---------- Done! Password also copied to clipboard ----------")
+
 
 def show_logins(): #function that shows all logins stored in the table
     db, mycursor = connect_database() #connects to database

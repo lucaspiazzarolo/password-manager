@@ -3,16 +3,7 @@
 import hashlib #library that will be used for the hashed password
 import functions as f
 import secrets
-import string
-
-# ---------------------------------------------------------------------
-# Create class "Password"
-class Password:
-    def __init__(self, u_service, u_login, c_password):
-        self.u_service = u_service
-        self.u_login = u_login
-        self.c_password = c_password
-    
+import string    
 
 # ---------------------------------------------------------------------
 # Require master password
@@ -68,11 +59,10 @@ while(user_option != 7): #loop so the user can perform many actions in one login
         if service_registered == False: #if it is a new service
             u_login = input("What is your login (or email)? ") #login info
             str_password = f.generate_password() #calls function to generate the password
-            c_password = f.encrypt_string(str_password) #encrypts password
-            #new_password = Password(u_service, u_login, c_password) #create new password object - still not working         
+            f.copy_to_clipboard(str_password) #copies password to clipboard
+            c_password = f.encrypt_string(str_password) #encrypts password        
             f.write_table(u_service, u_login, c_password) #writes the password in the table
-            print("\n---------- Password successfully inserted into table! ----------")
-            #implementar código de copiar a senha para o clipboard
+            print("\n---------- Password successfully inserted into table and copied to clipboard! ----------")
 
     elif user_option == 2: #if an existing password will be stored
         print("\n---------- Let's store your existing password! ----------")
@@ -86,10 +76,10 @@ while(user_option != 7): #loop so the user can perform many actions in one login
         if service_registered == False: #if it is a new service
             u_login = input("What is your login (or email)? ") #login info
             str_password = input("What is your password? ") #existing password info
+            f.copy_to_clipboard(str_password) #copies password to clipboard
             c_password = f.encrypt_string(str_password) #encrypts password
-            #new_password = Password(u_service, u_login, str_password) #create new password object - still not working
             f.write_table(u_service, u_login, c_password) #writes the password in the table
-            print("\n---------- Password successfully inserted into table! ----------")
+            print("\n---------- Password successfully inserted into table and copied to clipboard! ----------")
 
     elif user_option == 3: #if all stored logins will be shown
         print("\n---------- Retrieving all logins from database! ----------\n")
@@ -99,17 +89,19 @@ while(user_option != 7): #loop so the user can perform many actions in one login
         print("\n\n---------- Let's retrieve your password! ----------\n")
         u_service = input("What is the service? Example: Facebook, Instagram, etc.: ")
         f.show_password(u_service)
-        #copiar para clipboard
 
     elif user_option == 5: #if a specific register needs to be updated from the database
+        print("\n\n---------- Let's update your register! ----------\n")
         u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc.: ")
         f.change_table_row(u_service)
         #implementar código para deletar a linha na tabela
     
     elif user_option == 6: #if a specific register needs to be deleted from the database
+        print("\n\n---------- Let's delete your register! ----------\n")
         u_service = input("\nWhat is the service? Example: Facebook, Instagram, etc.: ")
+        registered = f.check_if_registered(u_service)
         f.delete_table_row(u_service)
-        if f.check_if_registered(u_service) == True:
+        if  registered:
             print("\n---------- {} register successfully deleted! ----------\n".format(u_service))
 
     elif user_option == 7: #exit
