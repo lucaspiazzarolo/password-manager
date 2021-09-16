@@ -19,8 +19,10 @@ The first thing you should do is to run the "hash-engine.py" script in order to 
 After doing that, you get your hashed password and update it in "password-safe.py" row #11
 Now you have your own master password working!
 
-After that, you might generate a new "pass.key" file, so you have your own encrypt/decrypt key (not mandatory)
+After that, you might generate a new "pass.key" file (using "generate-key.py"), so you have your own encrypt/decrypt key (not mandatory)
 
 Lastly, if you find some connectivity errors with the MYSQL, please check login and password informations in "functions.py" file, rows 44-46 and rows 56-58.
+
+The main file for the password manager is "password-safe.py"
 
 Hope you all enjoy it! :)
